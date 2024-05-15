@@ -74,7 +74,8 @@ public class SkyboxManager implements NuitApi {
         Preconditions.checkNotNull(identifier, "Identifier was null");
         Preconditions.checkNotNull(skybox, "Skybox was null");
         this.skyboxMap.put(identifier, skybox);
-        this.sortSkybox();
+
+        //this.sortSkybox(); NOTE: redundant to activeSkyboxes.sort in tick()
     }
 
     /**
@@ -87,7 +88,12 @@ public class SkyboxManager implements NuitApi {
      * "fabricskyboxes:sky/overworld_sky10.json"
      * "fabricskyboxes:sky/overworld_sky11.json"
      * "fabricskyboxes:sky/overworld_sky2.json"
+     * </p>
+     * <p>
+     * Note: This operation is redundant to activeSkyboxes.sort in tick() and should be retired.
+     * </p>
      */
+    @Deprecated
     private void sortSkybox() {
         Map<ResourceLocation, Skybox> newSortedMap = this.skyboxMap.entrySet()
                 .stream()
