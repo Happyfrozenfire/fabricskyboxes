@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.JsonOps;
 import io.github.amerebagatelle.mods.nuit.api.NuitPlatformHelper;
+import io.github.amerebagatelle.mods.nuit.skyboxes.DefaultHandler;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import io.github.amerebagatelle.mods.nuit.api.NuitApi;
 import io.github.amerebagatelle.mods.nuit.api.skyboxes.Skybox;
@@ -76,6 +77,8 @@ public class SkyboxManager implements NuitApi {
         this.skyboxMap.put(identifier, skybox);
 
         //this.sortSkybox(); NOTE: redundant to activeSkyboxes.sort in tick()
+
+        DefaultHandler.addConditions(skybox);
     }
 
     /**
@@ -114,12 +117,16 @@ public class SkyboxManager implements NuitApi {
         Preconditions.checkNotNull(identifier, "Identifier was null");
         Preconditions.checkNotNull(skybox, "Skybox was null");
         this.permanentSkyboxMap.put(identifier, skybox);
+
+        DefaultHandler.addConditions(skybox);
     }
 
     @Internal
     public void clearSkyboxes() {
         this.skyboxMap.clear();
         this.activeSkyboxes.clear();
+
+        DefaultHandler.clearConditionsExcept(permanentSkyboxMap.values());
     }
 
     @Internal
