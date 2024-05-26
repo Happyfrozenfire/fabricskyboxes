@@ -6,7 +6,7 @@ import io.github.amerebagatelle.mods.nuit.SkyboxManager;
 import io.github.amerebagatelle.mods.nuit.api.skyboxes.Skybox;
 import io.github.amerebagatelle.mods.nuit.resource.SkyboxResourceListener;
 import io.github.amerebagatelle.mods.nuit.screen.SkyboxDebugScreen;
-import io.github.amerebagatelle.mods.nuit.skyboxes.SkyboxType;
+import io.github.amerebagatelle.mods.nuit.skybox.SkyboxType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -42,8 +42,8 @@ public class NuitClientFabric implements ClientModInitializer {
         ClientTickEvents.END_WORLD_TICK.register(client -> SkyboxManager.getInstance().tick(client));
         ClientTickEvents.END_CLIENT_TICK.register(client -> NuitClient.config().getKeyBinding().tick(client));
         SkyboxDebugScreen screen = new SkyboxDebugScreen(Component.nullToEmpty("Skybox Debug Screen"));
-        HudRenderCallback.EVENT.register(screen::renderHud);
-        KeyBindingHelper.registerKeyBinding(NuitClient.config().getKeyBinding().toggleFabricSkyBoxes);
+        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> screen.renderHud(drawContext));
+        KeyBindingHelper.registerKeyBinding(NuitClient.config().getKeyBinding().toggleNuit);
         KeyBindingHelper.registerKeyBinding(NuitClient.config().getKeyBinding().toggleSkyboxDebugHud);
         NuitClient.init();
 
